@@ -2,7 +2,7 @@
 
 ## Starting idea
 
-A small desktop-style care window for someone who wants a gentle check-in. A little magnolia named Mallow sits on a branch. The player chooses water or sunlight; Mallow's happiness and expression respond, and the bar slowly drops by five points each hour to give care a reason to happen over time.
+A small desktop-style care window for someone who wants a gentle check-in. A little magnolia named Agi sits on a branch. The player chooses water or sunlight; Agi's happiness and expression respond, and the bar slowly drops by five points each hour to give care a reason to happen over time.
 
 ## Design and implementation decisions
 

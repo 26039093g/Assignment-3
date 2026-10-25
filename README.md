@@ -1,10 +1,10 @@
-# Mallow — a little care companion
+# Agi — a little care companion
 
-A tiny browser based desktop companion for anyone who wants a gentle, low-pressure interaction. Mallow is a magnolia sitting on a branch. Give it water or sunlight and its happiness, expression, and feedback change in response.
+A tiny browser based desktop companion for anyone who wants a gentle, low-pressure interaction. Agi is a magnolia sitting on a branch. Give it water or sunlight and its happiness, expression, and feedback change in response.
 
 ## The interaction
 
-Choose **Give water** or **Give sunlight**. Water gives Mallow 18 happiness points; sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points per hour. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
+Choose **Give water** or **Give sunlight**. Water gives Agi 18 happiness points; sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points per hour. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
 
 This is a local, single-browser experience. Water and sunlight are intentionally different choices in both their amount and visual reaction. Happiness is capped at 100% and never falls below 0%.
 
@@ -22,7 +22,7 @@ Opening `index.html` directly can also work, but a local server provides consist
 
 ## Screenshot
 
-**Before submission:** capture the running app and save the image as `screenshots/mallow-preview.png`. The source repository currently does not include a screenshot.
+**Before submission:** capture the running app and save the image as `screenshots/agi-preview.png`. The source repository currently does not include a screenshot.
 
 ## Files
 
@@ -41,3 +41,4 @@ Opening `index.html` directly can also work, but a local server provides consist
 ## Credits
 
 All app code, copy, styling, and the magnolia SVG artwork were created for this project with assistance from OpenAI Codex. No external images, code libraries, fonts, data, APIs, or services are used.
+

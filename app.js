@@ -5,7 +5,7 @@
   const DEFAULT_STATE = { happiness: 72, lastTick: Date.now(), paused: false, pausedAt: null };
   let state = { ...DEFAULT_STATE };
   let storageAvailable = true;
-  let lastVisibleMessage = "Mallow is glad you're here.";
+  let lastVisibleMessage = "Agi is glad you're here.";
 
   const els = {
     flower: document.querySelector("#flower"), value: document.querySelector("#happiness-value"),
@@ -43,7 +43,7 @@
     try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
     catch (_) {
       storageAvailable = false;
-      lastVisibleMessage = "Your browser isn't saving this garden, but you can still care for Mallow while this page is open.";
+      lastVisibleMessage = "Your browser isn't saving this garden, but you can still care for Agi while this page is open.";
     }
   }
 
@@ -67,11 +67,11 @@
   }
 
   function moodFor(value) {
-    if (value <= 20) return { mood: "Mallow is feeling a little low", hint: "A sip of water or a bit of sun could help.", cls: "is-sad", color: "#d39b8c" };
-    if (value <= 45) return { mood: "Mallow could use some care", hint: "Try a little water to lift the mood.", cls: "is-parched", color: "#d8b66b" };
-    if (value >= 85) return { mood: "Mallow is blooming happily", hint: "Mallow feels lovely and cared for.", cls: "is-happy", color: "#91a77b" };
-    if (value >= 60) return { mood: "Mallow is feeling okay", hint: "A little sunshine might brighten the day.", cls: "", color: "#91a77b" };
-    return { mood: "Mallow is ready for a pick-me-up", hint: "Water brings a refreshing boost.", cls: "", color: "#c9a856" };
+    if (value <= 20) return { mood: "Agi is feeling a little low", hint: "A sip of water or a bit of sun could help.", cls: "is-sad", color: "#d39b8c" };
+    if (value <= 45) return { mood: "Agi could use some care", hint: "Try a little water to lift the mood.", cls: "is-parched", color: "#d8b66b" };
+    if (value >= 85) return { mood: "Agi is blooming happily", hint: "Agi feels lovely and cared for.", cls: "is-happy", color: "#91a77b" };
+    if (value >= 60) return { mood: "Agi is feeling okay", hint: "A little sunshine might brighten the day.", cls: "", color: "#91a77b" };
+    return { mood: "Agi is ready for a pick-me-up", hint: "Water brings a refreshing boost.", cls: "", color: "#c9a856" };
   }
 
   function timeUntilDip() {
@@ -100,7 +100,7 @@
     if (mood.cls) els.flower.classList.add(mood.cls);
     els.pause.textContent = state.paused ? "Resume" : "Pause";
     els.pause.setAttribute("aria-pressed", String(state.paused));
-    els.pauseDescription.textContent = state.paused ? "Time is paused; Mallow's mood is resting." : "Time is passing gently.";
+    els.pauseDescription.textContent = state.paused ? "Time is paused; Agi's mood is resting." : "Time is passing gently.";
     saveState();
   }
 
@@ -109,15 +109,15 @@
     const before = state.happiness;
     const amount = kind === "water" ? 18 : 13;
     if (before >= 100) {
-      setMessage(`Mallow is already full of ${kind === "water" ? "freshness" : "sunshine"}. A quiet hello is enough for now.`);
+      setMessage(`Agi is already full of ${kind === "water" ? "freshness" : "sunshine"}. A quiet hello is enough for now.`);
       render(); return;
     }
     state.happiness = Math.min(100, before + amount);
     const gained = Math.round(state.happiness - before);
     if (!state.paused && before < 100) state.lastTick = Date.now();
     setMessage(kind === "water"
-      ? `A refreshing sip! Mallow's happiness rose by ${gained}%.`
-      : `A warm sunbeam! Mallow's happiness rose by ${gained}%.`);
+      ? `A refreshing sip! Agi's happiness rose by ${gained}%.`
+      : `A warm sunbeam! Agi's happiness rose by ${gained}%.`);
     els.flower.classList.remove("is-watering", "is-sunny", "is-happy");
     void els.flower.offsetWidth;
     els.flower.classList.add(kind === "water" ? "is-watering" : "is-sunny");
@@ -133,7 +133,7 @@
   document.querySelector("#confirm-reset").addEventListener("click", (event) => {
     event.preventDefault();
     state = { ...DEFAULT_STATE, lastTick: Date.now() };
-    setMessage("A fresh start for Mallow. Thanks for being here!");
+    setMessage("A fresh start for Agi. Thanks for being here!");
     saveState(); render(); els.resetDialog.close();
   });
   document.querySelector("#settings-button").addEventListener("click", () => els.settingsDialog.showModal());
@@ -153,14 +153,15 @@
   document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
 
   loadState();
-  if (!storageAvailable) lastVisibleMessage = "Your browser isn't saving this garden, but you can still care for Mallow while this page is open.";
+  if (!storageAvailable) lastVisibleMessage = "Your browser isn't saving this garden, but you can still care for Agi while this page is open.";
   render();
   els.feedback.textContent = lastVisibleMessage;
   window.setInterval(() => {
     const before = state.happiness;
     render();
-    if (state.happiness < before) setMessage("A little time passed, and Mallow's happiness gently dipped by 5%.");
+    if (state.happiness < before) setMessage("A little time passed, and Agi's happiness gently dipped by 5%.");
   }, 30_000);
 })();
+
 
 
