@@ -28,6 +28,7 @@ Opening `index.html` directly can also work, but a local server provides consist
 
 - `index.html` — app markup and original inline SVG character
 - `styles.css` — visual design, responsive layout, and reduced-motion support
+- `tree.css` — full-height tree trunk styling
 - `sunlight.css` — sunlight drag control styling
 - `app.js` — care actions, mood feedback, hourly decay, pause/resume, reset, and local persistence
 - `PROCESS.md` — process notes and a user-trial record to complete
