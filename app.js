@@ -1,8 +1,8 @@
 (() => {
   "use strict";
   const STORAGE_KEY = "mallow-garden-v1";
-  const HOUR = 60 * 60 * 1000;
-  const DEFAULT_STATE = { happiness: 72, lastTick: Date.now(), paused: false, pausedAt: null };
+  const DECAY_INTERVAL = 2 * 60 * 1000;
+  const DEFAULT_STATE = { happiness: 72, lastTick: Date.now(), paused: false, pausedAt: null, decayInterval: DECAY_INTERVAL };
   let state = { ...DEFAULT_STATE };
   let storageAvailable = true;
   let lastVisibleMessage = "Agi is glad you're here.";
@@ -26,11 +26,16 @@
       if (!raw) return;
       const saved = JSON.parse(raw);
       if (!saved || typeof saved !== "object" || !Number.isFinite(saved.happiness) || !Number.isFinite(saved.lastTick)) throw new Error("Invalid saved garden");
+      const now = Date.now();
+      const intervalChanged = saved.decayInterval !== DECAY_INTERVAL;
       state = {
         happiness: Math.max(0, Math.min(100, saved.happiness)),
-        lastTick: saved.lastTick,
+        lastTick: intervalChanged ? now : saved.lastTick,
         paused: saved.paused === true,
-        pausedAt: Number.isFinite(saved.pausedAt) ? saved.pausedAt : null
+        pausedAt: saved.paused === true
+          ? intervalChanged ? now : Number.isFinite(saved.pausedAt) ? saved.pausedAt : null
+          : null,
+        decayInterval: DECAY_INTERVAL
       };
       if (state.paused && state.pausedAt === null) state.paused = false;
       applyElapsedTime();
@@ -53,10 +58,10 @@
     if (state.paused) return;
     const now = Date.now();
     const elapsed = Math.max(0, now - state.lastTick);
-    const lost = Math.floor(elapsed / HOUR) * 5;
+    const lost = Math.floor(elapsed / DECAY_INTERVAL) * 5;
     if (lost > 0) {
       state.happiness = Math.max(0, state.happiness - lost);
-      state.lastTick += Math.floor(elapsed / HOUR) * HOUR;
+      state.lastTick += Math.floor(elapsed / DECAY_INTERVAL) * DECAY_INTERVAL;
     }
   }
 
@@ -79,11 +84,10 @@
   function timeUntilDip() {
     if (state.paused) return "Clock paused";
     const elapsed = Math.max(0, Date.now() - state.lastTick);
-    const remaining = HOUR - (elapsed % HOUR);
-    const minutes = Math.ceil(remaining / 60000);
-    if (minutes <= 1) return "Next dip in less than a minute";
-    if (minutes < 60) return `Next dip in ${minutes} minutes`;
-    return "Next dip in 1 hour";
+    const remaining = DECAY_INTERVAL - (elapsed % DECAY_INTERVAL);
+    if (remaining < 60_000) return "Next dip in less than a minute";
+    const minutes = Math.ceil(remaining / 60_000);
+    return `Next dip in ${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
   }
 
   function render() {
@@ -254,5 +258,5 @@
     const before = state.happiness;
     render();
     if (state.happiness < before) setMessage("A little time passed, and Agi's happiness gently dipped by 5%.");
-  }, 30_000);
+  }, 1_000);
 })();

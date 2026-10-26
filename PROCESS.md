@@ -2,7 +2,7 @@
 
 ## Starting idea
 
-A small desktop-style care window for someone who wants a gentle check-in. A little magnolia named Agi sits on a branch. The player chooses water or sunlight; Agi's happiness and expression respond, and the bar slowly drops by five points each hour to give care a reason to happen over time.
+A small desktop-style care window for someone who wants a gentle check-in. A little magnolia named Agi sits on a branch. The player chooses water or sunlight; Agi's happiness and expression respond, and the bar slowly drops by five points every two minutes to give care a reason to happen over time.
 
 ## Design and implementation decisions
 
@@ -11,11 +11,11 @@ A small desktop-style care window for someone who wants a gentle check-in. A lit
 - Added a happiness meter, contextual mood and care hint, and a live message that says how the action changed the meter.
 - Added browser persistence, elapsed-time decay, pause/resume, reset confirmation, bounds checking, and fallback messaging for unusable browser storage.
 - Added keyboard-visible focus styles, accessible button labels and a progressbar, plus reduced-motion support.
-- The experience uses a moderate hourly decay and direct care buttons rather than punishment or a failure state. The flower remains available at zero happiness.
+- The experience uses a gentle five-point decay every two minutes and direct care controls rather than punishment or a failure state. The flower remains available at zero happiness.
 
 ## AI tools
 
-OpenAI Codex helped draft the project structure, original SVG character, interface, interaction logic, and documentation. I kept the proposed hourly decay, local save, and pause/resume because they make a short-lived companion feel continuous while letting the player step away. I changed the first draft's undifferentiated care response into two distinct choices: water restores 18 points with droplets, while sunlight restores 13 with animated rays. I also made reset ask for confirmation so one click cannot erase the saved mood. No external AI services or runtime models are used by the app.
+OpenAI Codex helped draft the project structure, original SVG character, interface, interaction logic, and documentation. The two-minute decay, local save, and pause/resume make a short-lived companion feel continuous while letting the player step away. I changed the first draft's undifferentiated care response into two distinct choices: water restores 18 points with droplets, while sunlight restores 13 with animated rays. I also made reset ask for confirmation so one click cannot erase the saved mood. No external AI services or runtime models are used by the app.
 
 ## User trial and iteration
 

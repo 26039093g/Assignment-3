@@ -4,7 +4,7 @@ A tiny browser based desktop companion for anyone who wants a gentle, low-pressu
 
 ## The interaction
 
-Drag the **Water** droplet or **Give sunlight** onto Agi's garden scene to care for her; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points per hour. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
+Drag the **Water** droplet or **Sunlight** onto Agi's garden scene to care for her; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points every 2 minutes. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
 
 This is a local, single-browser experience. Water and sunlight are intentionally different choices in both their amount and visual reaction. Happiness is capped at 100% and never falls below 0%.
 
@@ -30,12 +30,12 @@ Opening `index.html` directly can also work, but a local server provides consist
 - `styles.css` — visual design, responsive layout, and reduced-motion support
 - `tree.css` — full-height tree trunk styling
 - `sunlight.css` — sunlight drag control styling
-- `app.js` — care actions, mood feedback, hourly decay, pause/resume, reset, and local persistence
+- `app.js` — care actions, mood feedback, two-minute decay, pause/resume, reset, and local persistence
 - `PROCESS.md` — process notes and a user-trial record to complete
 
 ## Limitations
 
-- The 5% hourly decay is based on the device clock. A substantially incorrect system clock can affect elapsed-time calculation.
+- The 5-point decay every two minutes is based on the device clock. A substantially incorrect system clock can affect elapsed-time calculation.
 - Progress is saved only in the same browser profile and device. Clearing browser data removes it.
 - If browser storage is blocked or unavailable, the app stays usable during the open session and tells you that progress may not be saved.
 - The flower illustration is intentionally simple and decorative; its visual states are expressed with a few expression and animation changes.
