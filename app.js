@@ -110,12 +110,23 @@
     saveState();
   }
 
+  function animateCare(kind) {
+    els.flower.classList.remove("is-watering", "is-sunny", "is-happy");
+    void els.flower.offsetWidth;
+    els.flower.classList.add(kind === "water" ? "is-watering" : "is-sunny");
+    if (state.happiness >= 85) els.flower.classList.add("is-happy");
+    window.setTimeout(() => els.flower.classList.remove("is-watering", "is-sunny"), 1500);
+    if (kind === "water") makeItRain();
+    else makeSunshine();
+  }
+
   function care(kind) {
     render();
     const before = state.happiness;
     const amount = kind === "water" ? 18 : 13;
     if (before >= 100) {
       setMessage(`Agi is already full of ${kind === "water" ? "freshness" : "sunshine"}. A quiet hello is enough for now.`);
+      animateCare(kind);
       render(); return;
     }
     state.happiness = Math.min(100, before + amount);
@@ -124,12 +135,7 @@
     setMessage(kind === "water"
       ? `A refreshing sip! Agi's happiness rose by ${gained}%.`
       : `A warm sunbeam! Agi's happiness rose by ${gained}%.`);
-    els.flower.classList.remove("is-watering", "is-sunny", "is-happy");
-    void els.flower.offsetWidth;
-    els.flower.classList.add(kind === "water" ? "is-watering" : "is-sunny");
-    if (state.happiness >= 85) els.flower.classList.add("is-happy");
-    window.setTimeout(() => els.flower.classList.remove("is-watering", "is-sunny"), 1500);
-    if (kind === "sun") makeSunshine();
+    animateCare(kind);
     render();
     if (!storageAvailable) els.feedback.textContent = `${lastVisibleMessage} (Not saved.)`;
   }
@@ -211,7 +217,6 @@
       window.setTimeout(() => { suppressClick = false; }, 0);
       if (droppedInGarden) {
         care(kind);
-        if (kind === "water") makeItRain();
       } else setMessage(`Drop the ${kind === "water" ? "water" : "sunlight"} anywhere in Agi's garden.`);
     });
     button.addEventListener("pointercancel", finishDrag);
