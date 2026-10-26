@@ -2,6 +2,10 @@
 
 A tiny browser based desktop companion for anyone who wants a gentle, low-pressure interaction. Agi is a magnolia sitting on a branch. Give it water or sunlight and its happiness, expression, and feedback change in response.
 
+## Live site
+
+<https://26039093g.github.io/Assignment-3/>
+
 ## The interaction
 
 Drag the **Water** droplet or **Sunlight** onto Agi's garden scene to care for her; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points every 2 minutes. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
