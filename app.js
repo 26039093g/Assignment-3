@@ -125,6 +125,7 @@
     els.flower.classList.add(kind === "water" ? "is-watering" : "is-sunny");
     if (state.happiness >= 85) els.flower.classList.add("is-happy");
     window.setTimeout(() => els.flower.classList.remove("is-watering", "is-sunny"), 1500);
+    if (kind === "sun") makeSunshine();
     render();
     if (!storageAvailable) els.feedback.textContent = `${lastVisibleMessage} (Not saved.)`;
   }
@@ -132,6 +133,7 @@
   let waterDrag = null;
   let suppressWaterClick = false;
   let rainTimeout;
+  let sunshineTimeout;
 
   function waterDropTargetAt(x, y) {
     const garden = els.garden.getBoundingClientRect();
@@ -146,65 +148,81 @@
     rainTimeout = window.setTimeout(() => els.garden.classList.remove("is-raining"), 1100);
   }
 
-  function finishWaterDrag() {
-    if (!waterDrag) return;
-    waterDrag.ghost?.remove();
-    els.water.classList.remove("is-dragging");
-    els.garden.classList.remove("is-water-target");
-    waterDrag = null;
+  function makeSunshine() {
+    els.garden.classList.remove("is-sunny");
+    void els.garden.offsetWidth;
+    els.garden.classList.add("is-sunny");
+    window.clearTimeout(sunshineTimeout);
+    sunshineTimeout = window.setTimeout(() => els.garden.classList.remove("is-sunny"), 1500);
   }
 
-  els.water.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0 || !event.isPrimary) return;
-    waterDrag = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      moved: false,
-      ghost: null
-    };
-    els.water.setPointerCapture(event.pointerId);
-  });
-  els.water.addEventListener("pointermove", (event) => {
-    if (!waterDrag || waterDrag.pointerId !== event.pointerId) return;
-    if (!waterDrag.moved && Math.hypot(event.clientX - waterDrag.startX, event.clientY - waterDrag.startY) < 8) return;
-    if (!waterDrag.moved) {
-      waterDrag.moved = true;
-      waterDrag.ghost = document.createElement("div");
-      waterDrag.ghost.className = "water-drag-ghost";
-      waterDrag.ghost.setAttribute("aria-hidden", "true");
-      waterDrag.ghost.innerHTML = els.water.innerHTML;
-      document.body.append(waterDrag.ghost);
-      els.water.classList.add("is-dragging");
+  function attachCareDrag(button, kind) {
+    let drag = null;
+    let suppressClick = false;
+    const targetClass = `is-${kind}-target`;
+
+    function finishDrag() {
+      if (!drag) return;
+      drag.ghost?.remove();
+      button.classList.remove("is-dragging");
+      els.garden.classList.remove(targetClass);
+      drag = null;
     }
-    waterDrag.ghost.style.left = `${event.clientX}px`;
-    waterDrag.ghost.style.top = `${event.clientY}px`;
-    els.garden.classList.toggle("is-water-target", waterDropTargetAt(event.clientX, event.clientY));
-  });
-  els.water.addEventListener("pointerup", (event) => {
-    if (!waterDrag || waterDrag.pointerId !== event.pointerId) return;
-    const droppedOnFlower = waterDrag.moved && waterDropTargetAt(event.clientX, event.clientY);
-    const wasDragged = waterDrag.moved;
-    finishWaterDrag();
-    if (!wasDragged) return;
-    event.preventDefault();
-    suppressWaterClick = true;
-    window.setTimeout(() => { suppressWaterClick = false; }, 0);
-    if (droppedOnFlower) {
-      care("water");
-      makeItRain();
-    } else setMessage("Drop the water anywhere in Agi's garden to give her a sip.");
-  });
-  els.water.addEventListener("pointercancel", finishWaterDrag);
-  els.water.addEventListener("lostpointercapture", finishWaterDrag);
-  els.water.addEventListener("click", (event) => {
-    if (suppressWaterClick) {
+
+    button.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || !event.isPrimary) return;
+      drag = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        moved: false,
+        ghost: null
+      };
+      button.setPointerCapture(event.pointerId);
+    });
+    button.addEventListener("pointermove", (event) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      if (!drag.moved && Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < 8) return;
+      if (!drag.moved) {
+        drag.moved = true;
+        drag.ghost = document.createElement("div");
+        drag.ghost.className = kind === "water" ? "water-drag-ghost" : "sun-drag-ghost";
+        drag.ghost.setAttribute("aria-hidden", "true");
+        drag.ghost.innerHTML = button.innerHTML;
+        document.body.append(drag.ghost);
+        button.classList.add("is-dragging");
+      }
+      drag.ghost.style.left = `${event.clientX}px`;
+      drag.ghost.style.top = `${event.clientY}px`;
+      els.garden.classList.toggle(targetClass, waterDropTargetAt(event.clientX, event.clientY));
+    });
+    button.addEventListener("pointerup", (event) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const droppedInGarden = drag.moved && waterDropTargetAt(event.clientX, event.clientY);
+      const wasDragged = drag.moved;
+      finishDrag();
+      if (!wasDragged) return;
       event.preventDefault();
-      return;
-    }
-    care("water");
-  });
-  document.querySelector("#sun-button").addEventListener("click", () => care("sun"));
+      suppressClick = true;
+      window.setTimeout(() => { suppressClick = false; }, 0);
+      if (droppedInGarden) {
+        care(kind);
+        if (kind === "water") makeItRain();
+      } else setMessage(`Drop the ${kind === "water" ? "water" : "sunlight"} anywhere in Agi's garden.`);
+    });
+    button.addEventListener("pointercancel", finishDrag);
+    button.addEventListener("lostpointercapture", finishDrag);
+    button.addEventListener("click", (event) => {
+      if (suppressClick) {
+        event.preventDefault();
+        return;
+      }
+      care(kind);
+    });
+  }
+
+  attachCareDrag(els.water, "water");
+  attachCareDrag(els.sun, "sun");
   document.querySelector("#reset-button").addEventListener("click", () => els.resetDialog.showModal());
   document.querySelector("#confirm-reset").addEventListener("click", (event) => {
     event.preventDefault();
@@ -238,4 +256,3 @@
     if (state.happiness < before) setMessage("A little time passed, and Agi's happiness gently dipped by 5%.");
   }, 30_000);
 })();
-

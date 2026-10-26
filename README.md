@@ -4,7 +4,7 @@ A tiny browser based desktop companion for anyone who wants a gentle, low-pressu
 
 ## The interaction
 
-Drag the **Water** droplet anywhere onto Agi's garden scene to make it rain and give Agi up to 18 happiness points, or activate the droplet to water her. **Give sunlight** adds 13 points. The bar, character state, and message update immediately. Happiness fades by 5 points per hour. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
+Drag the **Water** droplet or **Give sunlight** onto Agi's garden scene to care for her; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points per hour. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting.
 
 This is a local, single-browser experience. Water and sunlight are intentionally different choices in both their amount and visual reaction. Happiness is capped at 100% and never falls below 0%.
 
@@ -28,6 +28,7 @@ Opening `index.html` directly can also work, but a local server provides consist
 
 - `index.html` — app markup and original inline SVG character
 - `styles.css` — visual design, responsive layout, and reduced-motion support
+- `sunlight.css` — sunlight drag control styling
 - `app.js` — care actions, mood feedback, hourly decay, pause/resume, reset, and local persistence
 - `PROCESS.md` — process notes and a user-trial record to complete
 
