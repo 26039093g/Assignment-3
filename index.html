@@ -56,6 +56,17 @@
         <g class="hearts" fill="#dd8d7d"><path d="M124 65c-7-7-17 3-9 10l9 8 9-8c8-7-2-17-9-10Z"/><path d="M244 66c-5-5-12 2-6 8l6 5 6-5c6-6-1-13-6-8Z"/></g>
       </svg>
       <div class="garden-ground" aria-hidden="true"></div>
+      <div class="garden-rain" aria-hidden="true">
+        <span class="rain-drop" style="left: 8%; animation-delay: -.18s"></span>
+        <span class="rain-drop" style="left: 17%; animation-delay: -.52s"></span>
+        <span class="rain-drop" style="left: 27%; animation-delay: -.34s"></span>
+        <span class="rain-drop" style="left: 38%; animation-delay: -.68s"></span>
+        <span class="rain-drop" style="left: 48%; animation-delay: -.12s"></span>
+        <span class="rain-drop" style="left: 58%; animation-delay: -.44s"></span>
+        <span class="rain-drop" style="left: 68%; animation-delay: -.76s"></span>
+        <span class="rain-drop" style="left: 78%; animation-delay: -.26s"></span>
+        <span class="rain-drop" style="left: 89%; animation-delay: -.6s"></span>
+      </div>
       <div class="character-caption"><span class="status-dot" id="status-dot"></span><span id="mood-label">Agi is feeling okay</span></div>
     </section>
 
@@ -65,7 +76,10 @@
       <div class="meter-foot"><span id="care-hint">A little sunshine might brighten the day.</span><span id="next-change">Next dip in 1 hour</span></div>
 
       <div class="action-row">
-        <button class="care-button water-button" id="water-button" type="button"><span class="action-icon" aria-hidden="true">♧</span><span><b>Give water</b><small>A refreshing sip</small></span></button>
+        <button class="water-button" id="water-button" type="button" aria-label="Water" title="Drag onto Agi's garden to water">
+          <svg class="water-icon" viewBox="0 0 32 40" aria-hidden="true"><path d="M16 2C16 2 3 18 3 25a13 13 0 0 0 26 0C29 18 16 2 16 2Z"/></svg>
+          <span>Water</span>
+        </button>
         <button class="care-button sun-button" id="sun-button" type="button"><span class="action-icon" aria-hidden="true">☼</span><span><b>Give sunlight</b><small>A warm little glow</small></span></button>
       </div>
       <p class="feedback" id="feedback" role="status" aria-live="polite">Agi is glad you're here.</p>
@@ -94,4 +108,3 @@
   <noscript><p class="noscript">Please enable JavaScript to spend time with Agi.</p></noscript>
 </body>
 </html>
-

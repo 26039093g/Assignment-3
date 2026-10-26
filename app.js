@@ -9,12 +9,14 @@
 
   const els = {
     flower: document.querySelector("#flower"), value: document.querySelector("#happiness-value"),
+    garden: document.querySelector(".garden-card"),
     track: document.querySelector("#meter-track"), fill: document.querySelector("#meter-fill"),
     hint: document.querySelector("#care-hint"), next: document.querySelector("#next-change"),
     mood: document.querySelector("#mood-label"), dot: document.querySelector("#status-dot"),
     feedback: document.querySelector("#feedback"), resetDialog: document.querySelector("#reset-dialog"),
     settingsDialog: document.querySelector("#settings-dialog"), pause: document.querySelector("#pause-button"),
     pauseDescription: document.querySelector("#pause-description"), water: document.querySelector("#water-button"),
+    rain: document.querySelector(".garden-rain"),
     sun: document.querySelector("#sun-button")
   };
 
@@ -127,7 +129,81 @@
     if (!storageAvailable) els.feedback.textContent = `${lastVisibleMessage} (Not saved.)`;
   }
 
-  document.querySelector("#water-button").addEventListener("click", () => care("water"));
+  let waterDrag = null;
+  let suppressWaterClick = false;
+  let rainTimeout;
+
+  function waterDropTargetAt(x, y) {
+    const garden = els.garden.getBoundingClientRect();
+    return x >= garden.left && x <= garden.right && y >= garden.top && y <= garden.bottom;
+  }
+
+  function makeItRain() {
+    els.garden.classList.remove("is-raining");
+    void els.rain.offsetWidth;
+    els.garden.classList.add("is-raining");
+    window.clearTimeout(rainTimeout);
+    rainTimeout = window.setTimeout(() => els.garden.classList.remove("is-raining"), 1100);
+  }
+
+  function finishWaterDrag() {
+    if (!waterDrag) return;
+    waterDrag.ghost?.remove();
+    els.water.classList.remove("is-dragging");
+    els.garden.classList.remove("is-water-target");
+    waterDrag = null;
+  }
+
+  els.water.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || !event.isPrimary) return;
+    waterDrag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+      ghost: null
+    };
+    els.water.setPointerCapture(event.pointerId);
+  });
+  els.water.addEventListener("pointermove", (event) => {
+    if (!waterDrag || waterDrag.pointerId !== event.pointerId) return;
+    if (!waterDrag.moved && Math.hypot(event.clientX - waterDrag.startX, event.clientY - waterDrag.startY) < 8) return;
+    if (!waterDrag.moved) {
+      waterDrag.moved = true;
+      waterDrag.ghost = document.createElement("div");
+      waterDrag.ghost.className = "water-drag-ghost";
+      waterDrag.ghost.setAttribute("aria-hidden", "true");
+      waterDrag.ghost.innerHTML = els.water.innerHTML;
+      document.body.append(waterDrag.ghost);
+      els.water.classList.add("is-dragging");
+    }
+    waterDrag.ghost.style.left = `${event.clientX}px`;
+    waterDrag.ghost.style.top = `${event.clientY}px`;
+    els.garden.classList.toggle("is-water-target", waterDropTargetAt(event.clientX, event.clientY));
+  });
+  els.water.addEventListener("pointerup", (event) => {
+    if (!waterDrag || waterDrag.pointerId !== event.pointerId) return;
+    const droppedOnFlower = waterDrag.moved && waterDropTargetAt(event.clientX, event.clientY);
+    const wasDragged = waterDrag.moved;
+    finishWaterDrag();
+    if (!wasDragged) return;
+    event.preventDefault();
+    suppressWaterClick = true;
+    window.setTimeout(() => { suppressWaterClick = false; }, 0);
+    if (droppedOnFlower) {
+      care("water");
+      makeItRain();
+    } else setMessage("Drop the water anywhere in Agi's garden to give her a sip.");
+  });
+  els.water.addEventListener("pointercancel", finishWaterDrag);
+  els.water.addEventListener("lostpointercapture", finishWaterDrag);
+  els.water.addEventListener("click", (event) => {
+    if (suppressWaterClick) {
+      event.preventDefault();
+      return;
+    }
+    care("water");
+  });
   document.querySelector("#sun-button").addEventListener("click", () => care("sun"));
   document.querySelector("#reset-button").addEventListener("click", () => els.resetDialog.showModal());
   document.querySelector("#confirm-reset").addEventListener("click", (event) => {
@@ -162,6 +238,4 @@
     if (state.happiness < before) setMessage("A little time passed, and Agi's happiness gently dipped by 5%.");
   }, 30_000);
 })();
-
-
 
