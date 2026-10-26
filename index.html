@@ -7,6 +7,8 @@
   <meta name="description" content="A gentle little magnolia companion. Give it water and sunlight, and watch its happiness bloom.">
   <title>Magnolia — a little care companion</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="garden.css">
+  <link rel="stylesheet" href="flower.css">
   <link rel="stylesheet" href="tree.css">
   <link rel="stylesheet" href="sunlight.css">
   <script src="app.js" defer></script>
@@ -36,6 +38,38 @@
       <svg class="flower" id="flower" viewBox="0 0 360 280" role="img" aria-labelledby="flower-title flower-desc">
         <title id="flower-title">Agi the magnolia</title>
         <desc id="flower-desc">A little white magnolia with a friendly face resting on a branch.</desc>
+        <defs>
+          <radialGradient id="petal-gradient-top" cx=".5" cy=".96" r="1">
+            <stop offset="0" stop-color="#d96d8a"/>
+            <stop offset=".24" stop-color="#eaa2b4"/>
+            <stop offset=".56" stop-color="#f6d7df"/>
+            <stop offset=".9" stop-color="#fff8fa"/>
+          </radialGradient>
+          <radialGradient id="petal-gradient-left" cx=".98" cy=".72" r="1">
+            <stop offset="0" stop-color="#d96d8a"/>
+            <stop offset=".24" stop-color="#eaa2b4"/>
+            <stop offset=".56" stop-color="#f6d7df"/>
+            <stop offset=".9" stop-color="#fff8fa"/>
+          </radialGradient>
+          <radialGradient id="petal-gradient-right" cx=".02" cy=".72" r="1">
+            <stop offset="0" stop-color="#d96d8a"/>
+            <stop offset=".24" stop-color="#eaa2b4"/>
+            <stop offset=".56" stop-color="#f6d7df"/>
+            <stop offset=".9" stop-color="#fff8fa"/>
+          </radialGradient>
+          <radialGradient id="petal-gradient-lower-left" cx=".85" cy=".54" r="1">
+            <stop offset="0" stop-color="#d96d8a"/>
+            <stop offset=".24" stop-color="#eaa2b4"/>
+            <stop offset=".56" stop-color="#f6d7df"/>
+            <stop offset=".9" stop-color="#fff8fa"/>
+          </radialGradient>
+          <radialGradient id="petal-gradient-lower-right" cx=".15" cy=".54" r="1">
+            <stop offset="0" stop-color="#d96d8a"/>
+            <stop offset=".24" stop-color="#eaa2b4"/>
+            <stop offset=".56" stop-color="#f6d7df"/>
+            <stop offset=".9" stop-color="#fff8fa"/>
+          </radialGradient>
+        </defs>
         <path class="branch" d="M14 235 C92 202 165 223 224 203 C278 185 313 194 346 176" fill="none" stroke="#75533d" stroke-width="17" stroke-linecap="round"/>
         <path d="M40 222 C51 195 76 189 95 203 C78 217 61 225 40 222Z" fill="#7b9b70"/>
         <path d="M291 193 C298 165 323 152 343 162 C329 183 313 192 291 193Z" fill="#91a982"/>
@@ -43,11 +77,11 @@
         <path d="M183 178 C151 151 131 166 138 186 C154 192 170 187 183 178Z" fill="#8aa57d"/>
         <path d="M183 166 C211 140 235 151 228 172 C211 181 196 176 183 166Z" fill="#9ab18b"/>
         <g class="petals">
-          <ellipse class="petal petal-back" cx="181" cy="91" rx="28" ry="58"/>
-          <ellipse class="petal" cx="151" cy="108" rx="31" ry="55"/>
-          <ellipse class="petal" cx="211" cy="108" rx="31" ry="55"/>
-          <ellipse class="petal" cx="160" cy="128" rx="30" ry="48"/>
-          <ellipse class="petal" cx="202" cy="128" rx="30" ry="48"/>
+          <ellipse class="petal petal-back petal-top" cx="181" cy="91" rx="28" ry="58"/>
+          <ellipse class="petal petal-left" cx="151" cy="108" rx="31" ry="55"/>
+          <ellipse class="petal petal-right" cx="211" cy="108" rx="31" ry="55"/>
+          <ellipse class="petal petal-lower-left" cx="160" cy="128" rx="30" ry="48"/>
+          <ellipse class="petal petal-lower-right" cx="202" cy="128" rx="30" ry="48"/>
           <ellipse class="center" cx="181" cy="132" rx="22" ry="22"/>
         </g>
         <g class="face">
@@ -57,7 +91,7 @@
           <circle cx="164" cy="138" r="4" fill="#e99b8b" opacity=".65"/><circle cx="198" cy="138" r="4" fill="#e99b8b" opacity=".65"/>
         </g>
         <g class="water-drops" fill="#7eafc5"><path d="M117 78 C117 78 108 90 108 95a9 9 0 0 0 18 0c0-5-9-17-9-17Z"/><path d="M246 113 C246 113 240 121 240 125a6 6 0 0 0 12 0c0-4-6-12-6-12Z"/></g>
-        <g class="sun-rays" stroke="#e7b957" stroke-width="3" stroke-linecap="round"><path d="M181 27v-9M181 157v-9M118 91h-9M253 91h-9M137 47l-7-7M232 140l-7-7M225 47l7-7M137 140l-7 7"/></g>
+        <g class="sun-rays" stroke="#e8a914" stroke-width="3.5" stroke-linecap="round"><path d="M181 27v-9M181 157v-9M118 91h-9M253 91h-9M137 47l-7-7M232 140l-7-7M225 47l7-7M137 140l-7 7"/></g>
         <g class="hearts" fill="#dd8d7d"><path d="M124 65c-7-7-17 3-9 10l9 8 9-8c8-7-2-17-9-10Z"/><path d="M244 66c-5-5-12 2-6 8l6 5 6-5c6-6-1-13-6-8Z"/></g>
       </svg>
       <div class="garden-ground" aria-hidden="true"></div>

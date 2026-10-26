@@ -1,0 +1,7 @@
+.flower .petal{stroke:none}
+.flower .petal-top{fill:url(#petal-gradient-top)}
+.flower .petal-left{fill:url(#petal-gradient-left)}
+.flower .petal-right{fill:url(#petal-gradient-right)}
+.flower .petal-lower-left{fill:url(#petal-gradient-lower-left)}
+.flower .petal-lower-right{fill:url(#petal-gradient-lower-right)}
+.flower .center{fill:#ffc928;stroke:#e8a914;stroke-width:1}

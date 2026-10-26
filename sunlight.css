@@ -5,7 +5,10 @@
 .sun-button:active{transform:scale(.97)}
 .sun-button.is-dragging{opacity:.5;cursor:grabbing;transform:none}
 .sun-button:focus-visible{outline:3px solid #d3b65e;outline-offset:2px}
-.sun-icon{width:28px;height:28px;fill:#f1c857;stroke:#c79431;stroke-width:2;stroke-linecap:round;filter:drop-shadow(0 2px 2px rgba(124,99,43,.16))}
+.sun-icon{width:28px;height:28px;fill:#ffc928;stroke:#e8a914;stroke-width:2;stroke-linecap:round;filter:drop-shadow(0 2px 2px rgba(124,99,43,.16))}
+.sun-doodle{background:#ffc928;opacity:1;box-shadow:0 0 0 10px rgba(255,201,40,.22),0 0 0 21px rgba(255,201,40,.13)}
+.garden-card.is-sunny .sun-doodle{animation:sun-doodle-brighten 1.5s ease-in-out}
+@keyframes sun-doodle-brighten{0%,100%{opacity:1;filter:saturate(1) brightness(1);transform:scale(1)}35%,65%{opacity:1;filter:saturate(1.25) brightness(1.1);transform:scale(1.15)}}
 .sun-drag-ghost{position:fixed;z-index:1000;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;border:0;border-radius:0;background:transparent;color:#a87513;box-shadow:none;font:700 10px Inter,"Segoe UI",Arial,sans-serif;pointer-events:none;transform:translate(-50%,-50%)}
 .sun-drag-ghost .sun-button{min-width:0;min-height:0;padding:0}
 .sun-drag-ghost .sun-icon{width:32px;height:32px}
