@@ -5,3 +5,7 @@
 .flower .petal-lower-left{fill:url(#petal-gradient-lower-left)}
 .flower .petal-lower-right{fill:url(#petal-gradient-lower-right)}
 .flower .center{fill:#ffc928;stroke:#e8a914;stroke-width:1}
+.flower .face-mouth{opacity:0;transition:opacity .2s}
+.flower .mouth-smile,.flower.is-high-happiness .mouth-smile{opacity:1}
+.flower.is-low-happiness .mouth-smile,.flower.is-high-happiness .mouth-frown,.flower.is-low-happiness .mouth-neutral,.flower.is-medium-happiness .mouth-frown,.flower.is-medium-happiness .mouth-smile{opacity:0}
+.flower.is-low-happiness .mouth-frown,.flower.is-medium-happiness .mouth-neutral{opacity:1}

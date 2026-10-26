@@ -102,8 +102,9 @@
     els.hint.textContent = mood.hint;
     els.next.textContent = timeUntilDip();
     els.dot.style.background = mood.color;
-    els.flower.classList.remove("is-happy", "is-sad", "is-parched");
+    els.flower.classList.remove("is-happy", "is-sad", "is-parched", "is-low-happiness", "is-medium-happiness", "is-high-happiness");
     if (mood.cls) els.flower.classList.add(mood.cls);
+    els.flower.classList.add(value <= 45 ? "is-low-happiness" : value >= 85 ? "is-high-happiness" : "is-medium-happiness");
     els.pause.textContent = state.paused ? "Resume" : "Pause";
     els.pause.setAttribute("aria-pressed", String(state.paused));
     els.pauseDescription.textContent = state.paused ? "Time is paused; Agi's mood is resting." : "Time is passing gently.";
