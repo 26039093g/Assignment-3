@@ -2,7 +2,7 @@
   "use strict";
   const STORAGE_KEY = "mallow-garden-v1";
   const DECAY_INTERVAL = 2 * 60 * 1000;
-  const DEFAULT_STATE = { happiness: 72, lastTick: Date.now(), paused: false, pausedAt: null, decayInterval: DECAY_INTERVAL };
+  const DEFAULT_STATE = { happiness: 0, growthStage: 0, lastTick: Date.now(), paused: false, pausedAt: null, decayInterval: DECAY_INTERVAL };
   let state = { ...DEFAULT_STATE };
   let storageAvailable = true;
   let lastVisibleMessage = "Agi is glad you're here.";
@@ -25,11 +25,14 @@
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const saved = JSON.parse(raw);
-      if (!saved || typeof saved !== "object" || !Number.isFinite(saved.happiness) || !Number.isFinite(saved.lastTick)) throw new Error("Invalid saved garden");
+      if (!saved || typeof saved !== "object" || !Number.isFinite(saved.lastTick)) throw new Error("Invalid saved garden");
+      const savedHappiness = Number.isFinite(saved.happiness) ? saved.happiness : 0;
+      const savedStage = Number.isInteger(saved.growthStage) ? saved.growthStage : 0;
       const now = Date.now();
       const intervalChanged = saved.decayInterval !== DECAY_INTERVAL;
       state = {
-        happiness: Math.max(0, Math.min(100, saved.happiness)),
+        happiness: Math.max(0, Math.min(100, savedHappiness)),
+        growthStage: Math.max(0, Math.min(2, savedStage)),
         lastTick: intervalChanged ? now : saved.lastTick,
         paused: saved.paused === true,
         pausedAt: saved.paused === true
@@ -90,8 +93,23 @@
     return `Next dip in ${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
   }
 
+  function getStageClass() {
+    if (state.growthStage === 0) return "stage-bud";
+    if (state.growthStage === 1) return "stage-sprout";
+    return "stage-flower";
+  }
+
+  function advanceGrowthStage() {
+    if (state.growthStage >= 2 || state.happiness < 100) return false;
+    state.growthStage += 1;
+    state.happiness = 0;
+    state.lastTick = Date.now();
+    return true;
+  }
+
   function render() {
     applyElapsedTime();
+    if (state.happiness >= 100) advanceGrowthStage();
     const value = Math.round(state.happiness);
     const mood = moodFor(value);
     els.value.innerHTML = `${value}<span>%</span>`;
@@ -102,9 +120,10 @@
     els.hint.textContent = mood.hint;
     els.next.textContent = timeUntilDip();
     els.dot.style.background = mood.color;
-    els.flower.classList.remove("is-happy", "is-sad", "is-parched", "is-low-happiness", "is-medium-happiness", "is-high-happiness");
+    els.flower.classList.remove("is-happy", "is-sad", "is-parched", "is-low-happiness", "is-medium-happiness", "is-high-happiness", "stage-bud", "stage-sprout", "stage-flower");
     if (mood.cls) els.flower.classList.add(mood.cls);
     els.flower.classList.add(value <= 45 ? "is-low-happiness" : value >= 85 ? "is-high-happiness" : "is-medium-happiness");
+    els.flower.classList.add(getStageClass());
     els.pause.textContent = state.paused ? "Resume" : "Pause";
     els.pause.setAttribute("aria-pressed", String(state.paused));
     els.pauseDescription.textContent = state.paused ? "Time is paused; Agi's mood is resting." : "Time is passing gently.";
@@ -133,9 +152,18 @@
     state.happiness = Math.min(100, before + amount);
     const gained = Math.round(state.happiness - before);
     if (!state.paused && before < 100) state.lastTick = Date.now();
-    setMessage(kind === "water"
-      ? `A refreshing sip! Agi's happiness rose by ${gained}%.`
-      : `A warm sunbeam! Agi's happiness rose by ${gained}%.`);
+    if (state.happiness >= 100 && state.growthStage < 2) {
+      state.growthStage += 1;
+      state.happiness = 0;
+      state.lastTick = Date.now();
+      setMessage(state.growthStage === 1
+        ? "Agi's bud has opened into a tiny magnolia sprout."
+        : "A tiny sprout has grown into the full magnolia bloom.");
+    } else {
+      setMessage(kind === "water"
+        ? `A refreshing sip! Agi's happiness rose by ${gained}%.`
+        : `A warm sunbeam! Agi's happiness rose by ${gained}%.`);
+    }
     animateCare(kind);
     render();
     if (!storageAvailable) els.feedback.textContent = `${lastVisibleMessage} (Not saved.)`;
