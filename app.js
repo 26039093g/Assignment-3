@@ -26,8 +26,9 @@
       if (!raw) return;
       const saved = JSON.parse(raw);
       if (!saved || typeof saved !== "object" || !Number.isFinite(saved.lastTick)) throw new Error("Invalid saved garden");
-      const savedHappiness = Number.isFinite(saved.happiness) ? saved.happiness : 0;
-      const savedStage = Number.isInteger(saved.growthStage) ? saved.growthStage : 0;
+      const hasGrowthStage = Object.prototype.hasOwnProperty.call(saved, "growthStage");
+      const savedHappiness = hasGrowthStage && Number.isFinite(saved.happiness) ? saved.happiness : 0;
+      const savedStage = hasGrowthStage && Number.isInteger(saved.growthStage) ? saved.growthStage : 0;
       const now = Date.now();
       const intervalChanged = saved.decayInterval !== DECAY_INTERVAL;
       state = {

@@ -35,7 +35,7 @@
       <div class="garden-sky" aria-hidden="true">
         <span class="sun-doodle"></span><span class="cloud cloud-one"></span><span class="cloud cloud-two"></span>
       </div>
-      <svg class="flower" id="flower" viewBox="0 0 360 280" role="img" aria-labelledby="flower-title flower-desc">
+      <svg class="flower stage-bud" id="flower" viewBox="0 0 360 280" role="img" aria-labelledby="flower-title flower-desc">
         <title id="flower-title">Agi the magnolia</title>
         <desc id="flower-desc">A little white magnolia with a friendly face resting on a branch.</desc>
         <defs>
@@ -73,28 +73,45 @@
         <path class="branch" d="M14 235 C92 202 165 223 224 203 C278 185 313 194 346 176" fill="none" stroke="#75533d" stroke-width="17" stroke-linecap="round"/>
         <path d="M40 222 C51 195 76 189 95 203 C78 217 61 225 40 222Z" fill="#7b9b70"/>
         <path d="M291 193 C298 165 323 152 343 162 C329 183 313 192 291 193Z" fill="#91a982"/>
-        <path class="stem" d="M184 203 C182 171 182 150 181 130" fill="none" stroke="#66835e" stroke-width="9" stroke-linecap="round"/>
+        <path class="stem" d="M180 212 C178 194 181 177 180 158" fill="none" stroke="#66835e" stroke-width="9" stroke-linecap="round"/>
         <path d="M183 178 C151 151 131 166 138 186 C154 192 170 187 183 178Z" fill="#8aa57d"/>
         <path d="M183 166 C211 140 235 151 228 172 C211 181 196 176 183 166Z" fill="#9ab18b"/>
-        <g class="petals">
-          <ellipse class="petal petal-back petal-top" cx="181" cy="91" rx="28" ry="58"/>
-          <ellipse class="petal petal-left" cx="151" cy="108" rx="31" ry="55"/>
-          <ellipse class="petal petal-right" cx="211" cy="108" rx="31" ry="55"/>
-          <ellipse class="petal petal-lower-left" cx="160" cy="128" rx="30" ry="48"/>
-          <ellipse class="petal petal-lower-right" cx="202" cy="128" rx="30" ry="48"/>
-          <ellipse class="center" cx="181" cy="132" rx="22" ry="22"/>
+
+        <g class="stage-group bud-shape" aria-hidden="true">
+          <path d="M181 150 C167 134 165 112 178 99 C191 87 208 93 217 107 C230 124 225 149 202 160 C191 165 185 160 181 150Z" fill="#d17f97"/>
+          <path d="M169 147 C154 134 152 115 162 107 C171 99 181 101 189 111 C196 119 194 136 182 145 C177 149 173 150 169 147Z" fill="#ca7f9d" opacity=".8"/>
+          <path d="M194 146 C209 134 212 115 203 105 C193 96 181 100 172 110 C164 119 166 136 179 144 C186 149 190 150 194 146Z" fill="#c8778c" opacity=".8"/>
+          <path d="M177 153 C171 158 173 163 180 166 C186 163 188 158 181 153Z" fill="#d9a2af"/>
         </g>
-        <g class="face">
-          <ellipse cx="173" cy="130" rx="2.8" ry="3.7" fill="#51483c"/>
-          <ellipse cx="189" cy="130" rx="2.8" ry="3.7" fill="#51483c"/>
-          <path class="face-mouth mouth-frown" d="M176 143 Q181 137 186 143" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
-          <path class="face-mouth mouth-neutral" d="M176 141 H186" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
-          <path class="face-mouth mouth-smile" d="M176 139 Q181 144 186 139" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="164" cy="138" r="4" fill="#e99b8b" opacity=".65"/><circle cx="198" cy="138" r="4" fill="#e99b8b" opacity=".65"/>
+
+        <g class="stage-group sprout-shape" aria-hidden="true">
+          <path d="M180 160 C176 146 177 126 180 110" fill="none" stroke="#5d7d52" stroke-width="6" stroke-linecap="round"/>
+          <path d="M180 111 C164 97 162 78 170 70 C178 64 190 69 196 81 C204 94 200 110 186 119 C182 122 180 117 180 111Z" fill="#8aa77e"/>
+          <path d="M180 111 C196 95 210 98 218 110 C225 121 219 132 206 139 C198 143 189 141 180 131 C180 127 180 121 180 111Z" fill="#93b08a"/>
+          <ellipse class="sprout-center" cx="180" cy="116" rx="15" ry="17" fill="#f4d6cf"/>
         </g>
-        <g class="water-drops" fill="#7eafc5"><path d="M117 78 C117 78 108 90 108 95a9 9 0 0 0 18 0c0-5-9-17-9-17Z"/><path d="M246 113 C246 113 240 121 240 125a6 6 0 0 0 12 0c0-4-6-12-6-12Z"/></g>
-        <g class="sun-rays" stroke="#e8a914" stroke-width="3.5" stroke-linecap="round"><path d="M181 27v-9M181 157v-9M118 91h-9M253 91h-9M137 47l-7-7M232 140l-7-7M225 47l7-7M137 140l-7 7"/></g>
-        <g class="hearts" fill="#dd8d7d"><path d="M124 65c-7-7-17 3-9 10l9 8 9-8c8-7-2-17-9-10Z"/><path d="M244 66c-5-5-12 2-6 8l6 5 6-5c6-6-1-13-6-8Z"/></g>
+
+        <g class="stage-group adult-flower">
+          <g class="petals">
+            <ellipse class="petal petal-back petal-top" cx="181" cy="91" rx="28" ry="58"/>
+            <ellipse class="petal petal-left" cx="151" cy="108" rx="31" ry="55"/>
+            <ellipse class="petal petal-right" cx="211" cy="108" rx="31" ry="55"/>
+            <ellipse class="petal petal-lower-left" cx="160" cy="128" rx="30" ry="48"/>
+            <ellipse class="petal petal-lower-right" cx="202" cy="128" rx="30" ry="48"/>
+            <ellipse class="center" cx="181" cy="132" rx="22" ry="22"/>
+          </g>
+          <g class="face">
+            <ellipse cx="173" cy="130" rx="2.8" ry="3.7" fill="#51483c"/>
+            <ellipse cx="189" cy="130" rx="2.8" ry="3.7" fill="#51483c"/>
+            <path class="face-mouth mouth-frown" d="M176 143 Q181 137 186 143" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
+            <path class="face-mouth mouth-neutral" d="M176 141 H186" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
+            <path class="face-mouth mouth-smile" d="M176 139 Q181 144 186 139" fill="none" stroke="#51483c" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="164" cy="138" r="4" fill="#e99b8b" opacity=".65"/><circle cx="198" cy="138" r="4" fill="#e99b8b" opacity=".65"/>
+          </g>
+          <g class="water-drops" fill="#7eafc5"><path d="M117 78 C117 78 108 90 108 95a9 9 0 0 0 18 0c0-5-9-17-9-17Z"/><path d="M246 113 C246 113 240 121 240 125a6 6 0 0 0 12 0c0-4-6-12-6-12Z"/></g>
+          <g class="sun-rays" stroke="#e8a914" stroke-width="3.5" stroke-linecap="round"><path d="M181 27v-9M181 157v-9M118 91h-9M253 91h-9M137 47l-7-7M232 140l-7-7M225 47l7-7M137 140l-7 7"/></g>
+          <g class="hearts" fill="#dd8d7d"><path d="M124 65c-7-7-17 3-9 10l9 8 9-8c8-7-2-17-9-10Z"/><path d="M244 66c-5-5-12 2-6 8l6 5 6-5c6-6-1-13-6-8Z"/></g>
+        </g>
       </svg>
       <div class="garden-ground" aria-hidden="true"></div>
       <div class="garden-rain" aria-hidden="true">
@@ -112,9 +129,9 @@
     </section>
 
     <section class="care-panel" aria-labelledby="happiness-heading">
-      <div class="meter-heading"><div><p class="eyebrow">MOOD CHECK</p><h2 id="happiness-heading">Happiness</h2></div><strong class="happiness-value" id="happiness-value">72<span>%</span></strong></div>
-      <div class="meter-track" id="meter-track" role="progressbar" aria-label="Agi's happiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72"><div class="meter-fill" id="meter-fill"></div></div>
-      <div class="meter-foot"><span id="care-hint">A little sunshine might brighten the day.</span><span id="next-change">Next dip in 2 minutes</span></div>
+      <div class="meter-heading"><div><p class="eyebrow">MOOD CHECK</p><h2 id="happiness-heading">Happiness</h2></div><strong class="happiness-value" id="happiness-value">0<span>%</span></strong></div>
+      <div class="meter-track" id="meter-track" role="progressbar" aria-label="Agi's happiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="meter-fill" id="meter-fill"></div></div>
+      <div class="meter-foot"><span id="care-hint">A little sunshine and water will help the bud open.</span><span id="next-change">Next dip in 2 minutes</span></div>
 
       <p class="care-instructions">Please water and give sunlight to Agi to make them happy!</p>
       <div class="action-row">
