@@ -9,3 +9,5 @@
 .flower .mouth-smile,.flower.is-high-happiness .mouth-smile{opacity:1}
 .flower.is-low-happiness .mouth-smile,.flower.is-high-happiness .mouth-frown,.flower.is-low-happiness .mouth-neutral,.flower.is-medium-happiness .mouth-frown,.flower.is-medium-happiness .mouth-smile{opacity:0}
 .flower.is-low-happiness .mouth-frown,.flower.is-medium-happiness .mouth-neutral{opacity:1}
+
+.flower.is-low-happiness .adult-flower .mouth-frown{d:path("M176 137 Q181 131 186 137")}.flower.is-low-happiness .sprout-face .mouth-frown{d:path("M176 123 Q181 117 186 123")}.flower.is-sad .sprout-face{transform:none}
