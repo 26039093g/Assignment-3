@@ -1,6 +1,6 @@
 # Agi — a little care companion
 
-A tiny browser based desktop companion for anyone who wants a gentle low-pressure interaction that helps remind subtely to take a break from the menial desk work. Agi is a magnolia sitting on a branch, only a simple bud who needs to be nurtured to fufill her needs. Give Agi water or sunlight and their happiness, expression, and feedback will change in response.
+A tiny browser based desktop companion for anyone who wants a gentle low-pressure interaction that helps remind subtely to take a break from the menial desk work. Agi is a magnolia sitting on a branch, only a simple bud who needs to be nurtured to fufill her needs. Give Agi water or sunlight and their happiness, expression, and feedback will change in response. Just being their with her also brightens their mood, so make sure to not close the tab. <3
 
 ## Live site
 
@@ -10,7 +10,9 @@ Just open the link below.
 
 ## The interaction
 
-Drag the **Water** droplet or **Sunlight** onto Agi's garden scene to care for them; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points every 2 minutes, but while the app is open and the page is active, Agi gains 1% happiness every 10 seconds as a gentle reminder that the player is still present. The garden clock can be paused in the ☼ settings button and resumed later. The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting, making sure that the player wants to reset Agi's stages instead of commiting a mistake.This is a local, single-browser experience. Water and sunlight are intentionally different choices in both their amount and visual reaction. Happiness is capped at 100% and never falls below 0%. Water and sunlight are also limited to two acts in any 30-second window, keeping Agi's growth gentle and steady.
+Drag the **Water** droplet or **Sunlight** onto Agi's garden scene to care for them; water makes it rain, while sunlight brightens the garden. You can also activate either control directly. Water gives up to 18 happiness points and sunlight gives 13. The bar, character state, and message update immediately. Happiness fades by 5 points every 2 minutes, but while the app is open and the page is active, Agi gains 1% happiness every 10 seconds as a gentle reminder that the player is still present. The garden clock can be paused in the ☼ settings button and resumed later.
+
+The app remembers the mood and time in this browser, even after closing and reopening the page. **Start over** opens a confirmation before resetting, making sure that the player wants to reset Agi's stages instead of commiting a mistake. This is a local, single-browser experience. Water and sunlight are intentionally different choices in both their amount and visual reaction. Happiness is capped at 100% and never falls below 0%. Water and sunlight are also limited to two acts in any 30-second window, keeping Agi's growth gentle and steady, hopefully encouraging the player to return to the site.
 
 ## Run locally
 
