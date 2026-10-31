@@ -4,6 +4,7 @@
   const DECAY_INTERVAL = 2 * 60 * 1000;
   const CARE_WINDOW_MS = 30 * 1000;
   const CARE_LIMIT_PER_WINDOW = 2;
+  const PASSIVE_GAIN_INTERVAL = 10 * 1000;
   const DEFAULT_STATE = {
     happiness: 0,
     growthStage: 0,
@@ -11,7 +12,8 @@
     paused: false,
     pausedAt: null,
     decayInterval: DECAY_INTERVAL,
-    careHistory: { water: [], sun: [] }
+    careHistory: { water: [], sun: [] },
+    passiveCareAt: Date.now()
   };
   let state = { ...DEFAULT_STATE };
   let storageAvailable = true;
@@ -54,7 +56,8 @@
         careHistory: {
           water: Array.isArray(savedCareHistory.water) ? savedCareHistory.water.filter((timestamp) => Number.isFinite(timestamp)) : [],
           sun: Array.isArray(savedCareHistory.sun) ? savedCareHistory.sun.filter((timestamp) => Number.isFinite(timestamp)) : []
-        }
+        },
+        passiveCareAt: Number.isFinite(saved.passiveCareAt) ? saved.passiveCareAt : now
       };
       pruneCareHistory("water");
       pruneCareHistory("sun");
@@ -83,6 +86,17 @@
     if (lost > 0) {
       state.happiness = Math.max(0, state.happiness - lost);
       state.lastTick += Math.floor(elapsed / DECAY_INTERVAL) * DECAY_INTERVAL;
+    }
+  }
+
+  function applyPassiveCare() {
+    if (state.paused || document.hidden) return;
+    const now = Date.now();
+    const elapsed = Math.max(0, now - (state.passiveCareAt || now));
+    const gained = Math.floor(elapsed / PASSIVE_GAIN_INTERVAL);
+    if (gained > 0) {
+      state.happiness = Math.min(100, state.happiness + gained);
+      state.passiveCareAt += gained * PASSIVE_GAIN_INTERVAL;
     }
   }
 
@@ -140,14 +154,18 @@
     state.careHistory[kind].push(Date.now());
   }
 
+  function bothCareLimitsReached() {
+    const hasWaterLimit = state.careHistory && Array.isArray(state.careHistory.water) && state.careHistory.water.length >= CARE_LIMIT_PER_WINDOW;
+    const hasSunLimit = state.careHistory && Array.isArray(state.careHistory.sun) && state.careHistory.sun.length >= CARE_LIMIT_PER_WINDOW;
+    return hasWaterLimit && hasSunLimit;
+  }
+
   function getCareLimitMessage(kind) {
-    const remaining = getCareCooldown(kind);
-    const totalSeconds = Math.ceil(remaining / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const duration = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+    if (bothCareLimitsReached()) {
+      return "Agi needs a few seconds to absorb everything. Stick around for 30 seconds.";
+    }
     const label = kind === "water" ? "water" : "sunlight";
-    return `Agi needs a few seconds to absorb everything. Stick around for 30 seconds.`;
+    return `Agi has already had two ${label} boosts in the last 30 seconds.`;
   }
 
   function getStageClass() {
@@ -166,6 +184,7 @@
 
   function render() {
     applyElapsedTime();
+    applyPassiveCare();
     if (state.happiness >= 100) advanceGrowthStage();
     const value = Math.round(state.happiness);
     const mood = moodFor(value);
@@ -346,7 +365,12 @@
     }
     render();
   });
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      state.passiveCareAt = Date.now();
+      render();
+    }
+  });
 
   loadState();
   if (!storageAvailable) lastVisibleMessage = "Your browser isn't saving this garden, but you can still care for Agi while this page is open.";
