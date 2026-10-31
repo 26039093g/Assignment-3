@@ -2,7 +2,17 @@
   "use strict";
   const STORAGE_KEY = "mallow-garden-v1";
   const DECAY_INTERVAL = 2 * 60 * 1000;
-  const DEFAULT_STATE = { happiness: 0, growthStage: 0, lastTick: Date.now(), paused: false, pausedAt: null, decayInterval: DECAY_INTERVAL };
+  const CARE_WINDOW_MS = 30 * 1000;
+  const CARE_LIMIT_PER_WINDOW = 2;
+  const DEFAULT_STATE = {
+    happiness: 0,
+    growthStage: 0,
+    lastTick: Date.now(),
+    paused: false,
+    pausedAt: null,
+    decayInterval: DECAY_INTERVAL,
+    careHistory: { water: [], sun: [] }
+  };
   let state = { ...DEFAULT_STATE };
   let storageAvailable = true;
   let lastVisibleMessage = "Agi is glad you're here.";
@@ -29,6 +39,7 @@
       const hasGrowthStage = Object.prototype.hasOwnProperty.call(saved, "growthStage");
       const savedHappiness = hasGrowthStage && Number.isFinite(saved.happiness) ? saved.happiness : 0;
       const savedStage = hasGrowthStage && Number.isInteger(saved.growthStage) ? saved.growthStage : 0;
+      const savedCareHistory = saved && typeof saved.careHistory === "object" ? saved.careHistory : {};
       const now = Date.now();
       const intervalChanged = saved.decayInterval !== DECAY_INTERVAL;
       state = {
@@ -39,8 +50,14 @@
         pausedAt: saved.paused === true
           ? intervalChanged ? now : Number.isFinite(saved.pausedAt) ? saved.pausedAt : null
           : null,
-        decayInterval: DECAY_INTERVAL
+        decayInterval: DECAY_INTERVAL,
+        careHistory: {
+          water: Array.isArray(savedCareHistory.water) ? savedCareHistory.water.filter((timestamp) => Number.isFinite(timestamp)) : [],
+          sun: Array.isArray(savedCareHistory.sun) ? savedCareHistory.sun.filter((timestamp) => Number.isFinite(timestamp)) : []
+        }
       };
+      pruneCareHistory("water");
+      pruneCareHistory("sun");
       if (state.paused && state.pausedAt === null) state.paused = false;
       applyElapsedTime();
     } catch (error) {
@@ -94,6 +111,45 @@
     return `Next dip in ${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
   }
 
+  function pruneCareHistory(kind) {
+    const now = Date.now();
+    if (!state.careHistory || !Array.isArray(state.careHistory[kind])) {
+      state.careHistory = { ...state.careHistory, [kind]: [] };
+      return;
+    }
+    state.careHistory[kind] = state.careHistory[kind].filter((timestamp) => now - timestamp < CARE_WINDOW_MS);
+  }
+
+  function getCareCooldown(kind) {
+    pruneCareHistory(kind);
+    if (!state.careHistory || !Array.isArray(state.careHistory[kind]) || state.careHistory[kind].length < CARE_LIMIT_PER_WINDOW) {
+      return 0;
+    }
+    const oldest = state.careHistory[kind][0];
+    const remaining = CARE_WINDOW_MS - (Date.now() - oldest);
+    return Math.max(0, remaining);
+  }
+
+  function canGiveCare(kind) {
+    pruneCareHistory(kind);
+    return Boolean(state.careHistory && Array.isArray(state.careHistory[kind]) && state.careHistory[kind].length < CARE_LIMIT_PER_WINDOW);
+  }
+
+  function recordCare(kind) {
+    pruneCareHistory(kind);
+    state.careHistory[kind].push(Date.now());
+  }
+
+  function getCareLimitMessage(kind) {
+    const remaining = getCareCooldown(kind);
+    const totalSeconds = Math.ceil(remaining / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const duration = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+    const label = kind === "water" ? "water" : "sunlight";
+    return `Agi needs a few seconds to absorb everything. Stick around for 30 seconds.`;
+  }
+
   function getStageClass() {
     if (state.growthStage === 0) return "stage-bud";
     if (state.growthStage === 1) return "stage-sprout";
@@ -143,6 +199,12 @@
 
   function care(kind) {
     render();
+    if (!canGiveCare(kind)) {
+      setMessage(getCareLimitMessage(kind));
+      animateCare(kind);
+      render();
+      return;
+    }
     const before = state.happiness;
     const amount = kind === "water" ? 18 : 13;
     if (before >= 100) {
@@ -150,6 +212,7 @@
       animateCare(kind);
       render(); return;
     }
+    recordCare(kind);
     state.happiness = Math.min(100, before + amount);
     const gained = Math.round(state.happiness - before);
     if (!state.paused && before < 100) state.lastTick = Date.now();
