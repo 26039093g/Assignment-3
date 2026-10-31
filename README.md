@@ -28,7 +28,7 @@ Opening `index.html` directly can also work, but a local server provides consist
 
 ## Screenshot
 
-<img width="982" height="1452" alt="Screenshot 2026-10-31 204551" src="https://github.com/user-attachments/assets/8a2da104-b83d-4463-9336-33240b1f4edd" /> <img width="1182" height="1436" alt="Screenshot 2026-10-31 204725" src="https://github.com/user-attachments/assets/1b648abb-348b-40bc-9c77-324a25496ed0" /> <img width="500" height="600" alt="Screenshot 2026-10-31 201042" src="https://github.com/user-attachments/assets/7fdb30b8-5648-47a5-9ef1-b19fe531c0a4" />
+<img width="327" height="484" alt="Screenshot 2026-10-31 204551" src="https://github.com/user-attachments/assets/8a2da104-b83d-4463-9336-33240b1f4edd" /> <img width="327" height="484" alt="Screenshot 2026-10-31 204725" src="https://github.com/user-attachments/assets/1b648abb-348b-40bc-9c77-324a25496ed0" /> <img width="327" height="484" alt="Screenshot 2026-10-31 201042" src="https://github.com/user-attachments/assets/7fdb30b8-5648-47a5-9ef1-b19fe531c0a4" />
 
 ## Limitations
 
