@@ -54,13 +54,11 @@
           : null,
         decayInterval: DECAY_INTERVAL,
         careHistory: {
-          water: Array.isArray(savedCareHistory.water) ? savedCareHistory.water.filter((timestamp) => Number.isFinite(timestamp)) : [],
-          sun: Array.isArray(savedCareHistory.sun) ? savedCareHistory.sun.filter((timestamp) => Number.isFinite(timestamp)) : []
+          water: [],
+          sun: []
         },
-        passiveCareAt: Number.isFinite(saved.passiveCareAt) ? saved.passiveCareAt : now
+        passiveCareAt: now
       };
-      pruneCareHistory("water");
-      pruneCareHistory("sun");
       if (state.paused && state.pausedAt === null) state.paused = false;
       applyElapsedTime();
     } catch (error) {
