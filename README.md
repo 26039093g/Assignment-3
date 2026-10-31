@@ -28,7 +28,7 @@ Opening `index.html` directly can also work, but a local server provides consist
 
 ## Screenshot
 
-<img width="1094" height="1440" alt="Screenshot 2026-10-31 201042" src="https://github.com/user-attachments/assets/7fdb30b8-5648-47a5-9ef1-b19fe531c0a4" />
+<img width="500" height="800" alt="Screenshot 2026-10-31 201042" src="https://github.com/user-attachments/assets/7fdb30b8-5648-47a5-9ef1-b19fe531c0a4" />
 
 ## Limitations
 
