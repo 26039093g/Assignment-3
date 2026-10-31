@@ -12,7 +12,7 @@
     paused: false,
     pausedAt: null,
     decayInterval: DECAY_INTERVAL,
-    careHistory: { water: [], sun: [] },
+    careHistory: { water: [], sun: [], total: [] },
     passiveCareAt: Date.now()
   };
   let state = { ...DEFAULT_STATE };
@@ -55,12 +55,14 @@
         decayInterval: DECAY_INTERVAL,
         careHistory: {
           water: Array.isArray(savedCareHistory.water) ? savedCareHistory.water.filter((timestamp) => Number.isFinite(timestamp)) : [],
-          sun: Array.isArray(savedCareHistory.sun) ? savedCareHistory.sun.filter((timestamp) => Number.isFinite(timestamp)) : []
+          sun: Array.isArray(savedCareHistory.sun) ? savedCareHistory.sun.filter((timestamp) => Number.isFinite(timestamp)) : [],
+          total: Array.isArray(savedCareHistory.total) ? savedCareHistory.total.filter((timestamp) => Number.isFinite(timestamp)) : []
         },
         passiveCareAt: Number.isFinite(saved.passiveCareAt) ? saved.passiveCareAt : now
       };
       pruneCareHistory("water");
       pruneCareHistory("sun");
+      pruneCareHistory("total");
       if (state.paused && state.pausedAt === null) state.paused = false;
       applyElapsedTime();
     } catch (error) {
@@ -89,8 +91,12 @@
     }
   }
 
+  function isPageOpen() {
+    return !document.hidden && document.visibilityState === "visible";
+  }
+
   function applyPassiveCare() {
-    if (state.paused || document.hidden) return;
+    if (state.paused || !isPageOpen()) return;
     const now = Date.now();
     const elapsed = Math.max(0, now - (state.passiveCareAt || now));
     const gained = Math.floor(elapsed / PASSIVE_GAIN_INTERVAL);
@@ -136,28 +142,34 @@
 
   function getCareCooldown(kind) {
     pruneCareHistory(kind);
-    if (!state.careHistory || !Array.isArray(state.careHistory[kind]) || state.careHistory[kind].length < CARE_LIMIT_PER_WINDOW) {
-      return 0;
-    }
-    const oldest = state.careHistory[kind][0];
+    pruneCareHistory("total");
+    const history = state.careHistory && Array.isArray(state.careHistory.total) ? state.careHistory.total : [];
+    if (history.length < CARE_LIMIT_PER_WINDOW) return 0;
+    const oldest = history[0];
     const remaining = CARE_WINDOW_MS - (Date.now() - oldest);
     return Math.max(0, remaining);
   }
 
   function canGiveCare(kind) {
     pruneCareHistory(kind);
-    return Boolean(state.careHistory && Array.isArray(state.careHistory[kind]) && state.careHistory[kind].length < CARE_LIMIT_PER_WINDOW);
+    pruneCareHistory("total");
+    const underKindLimit = Boolean(state.careHistory && Array.isArray(state.careHistory[kind]) && state.careHistory[kind].length < CARE_LIMIT_PER_WINDOW);
+    const underTotalLimit = Boolean(state.careHistory && Array.isArray(state.careHistory.total) && state.careHistory.total.length < CARE_LIMIT_PER_WINDOW);
+    return underKindLimit && underTotalLimit;
   }
 
   function recordCare(kind) {
     pruneCareHistory(kind);
+    pruneCareHistory("total");
     state.careHistory[kind].push(Date.now());
+    state.careHistory.total.push(Date.now());
   }
 
   function bothCareLimitsReached() {
-    const hasWaterLimit = state.careHistory && Array.isArray(state.careHistory.water) && state.careHistory.water.length >= CARE_LIMIT_PER_WINDOW;
-    const hasSunLimit = state.careHistory && Array.isArray(state.careHistory.sun) && state.careHistory.sun.length >= CARE_LIMIT_PER_WINDOW;
-    return hasWaterLimit && hasSunLimit;
+    pruneCareHistory("water");
+    pruneCareHistory("sun");
+    pruneCareHistory("total");
+    return state.careHistory.total.length >= CARE_LIMIT_PER_WINDOW;
   }
 
   function getCareLimitMessage(kind) {
