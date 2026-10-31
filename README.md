@@ -4,7 +4,7 @@ A tiny browser based desktop companion for anyone who wants a gentle, low-pressu
 
 ## Live site
 
-Just open the link below/
+Just open the link below.
 
 <https://26039093g.github.io/Assignment-3/>
 
