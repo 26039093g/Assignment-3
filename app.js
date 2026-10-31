@@ -350,7 +350,12 @@
   document.querySelector("#reset-button").addEventListener("click", () => els.resetDialog.showModal());
   document.querySelector("#confirm-reset").addEventListener("click", (event) => {
     event.preventDefault();
-    state = { ...DEFAULT_STATE, lastTick: Date.now() };
+    state = {
+      ...DEFAULT_STATE,
+      lastTick: Date.now(),
+      passiveCareAt: Date.now(),
+      careHistory: { water: [], sun: [] }
+    };
     setMessage("A fresh start for Agi. Thanks for being here!");
     saveState(); render(); els.resetDialog.close();
   });
