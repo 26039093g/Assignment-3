@@ -2,7 +2,7 @@
 
 ## Starting idea
 
-A small desktop-style care window for someone who wants a gentle check-in. A little magnolia named Agi sits on a branch. The player chooses water or sunlight; Agi's happiness and expression respond, and the bar slowly drops by five points every two minutes to give care a reason to happen over time.
+A "check-in" browser game that allows the players to take a break alongside a magnolia flower, named Agi. While watering Agi and giving them sunlight, the player can watch them grow, in both hapiness with a kind smile on their face.  
 
 ## Design and implementation decisions
 
@@ -15,16 +15,25 @@ A small desktop-style care window for someone who wants a gentle check-in. A lit
 
 ## AI tools
 
-OpenAI Codex helped draft the project structure, original SVG character, interface, interaction logic, and documentation. The two-minute decay, local save, and pause/resume make a short-lived companion feel continuous while letting the player step away. I changed the first draft's undifferentiated care response into two distinct choices: water restores 18 points with droplets, while sunlight restores 13 with animated rays. I also made reset ask for confirmation so one click cannot erase the saved mood. No external AI services or runtime models are used by the app.
+OpenAI Codex helped draft the project structure, original SVG character, interface, and interaction logic. The documentation was editded partly by AI, but was created and then edited again by me. The two-minute decay, local save, and pause/resume make a short-lived companion feel continuous while letting the player step away. I changed the first draft's undifferentiated care response into two distinct choices: water restores 18 points with droplets, while sunlight restores 13 with animated rays. I also made reset ask for confirmation so one click cannot erase the saved mood. No external AI services or runtime models are used by the app.
 
 ## User trial and iteration
 
-**Complete this section after a real person tries the experience, before submitting the assignment. Do not identify the person.**
-
 - What the person tried first:
+
+They tried a version where it was just the full flower that needed to be watered and given sunlight. Having just the simple interaction between player and magnolia flower.
+  
 - Where they hesitated or what they asked:
+
+While the instructions and task were very simple, they wished for more visual feedback that the plant's happiness was growing. Such as having the three stages of growth then added to the game after their feedback.
+ 
 - Whether the response made sense to them:
+
+Everything was understandable and digestable for the player. All that truly concerned them was the lack of visualization of the change the flower went through as they watered it and gave it sunlight. 
+
 - One improvement made from the observation, or why the design was kept:
+
+I included an addition of 2 more forms of growth. Allowing the player to see their actual affect on Agi and the happiness they bring to them. After these changes were made and given back to the tester, they repoeted back a more positive response. 
 
 ## Credits
 
